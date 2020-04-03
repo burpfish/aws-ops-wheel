@@ -1,7 +1,7 @@
-output vpc_subnet_arn {
-  value = resource aws_vpc.vpc.arn
+output private_subnet {
+  value = aws_subnet.private_subnet
 }
 
-output private_subnet_arn {
-  value = aws_subnet.private_subnet.arn
+output use_endpoint_security_group {
+  value = aws_security_group.use_endpoint_security_group
 }

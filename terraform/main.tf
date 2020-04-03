@@ -1,5 +1,8 @@
 module "vpc" {
   source = "./vpc"
+
+  participant_table = module.dynamo.participant_table
+  wheel_table       = module.dynamo.wheel_table
 }
 
 module "api_gateway" {
@@ -12,10 +15,10 @@ module "api_gateway" {
 module "lambda" {
   source = "./lambda"
 
-  participant_table = module.dynamo.participant_table
-  wheel_table       = module.dynamo.wheel_table
-  private_subnet_arn = module.vpc.private_subnet_arn
-  allow_vpc_endpoints_security_group = 
+  participant_table           = module.dynamo.participant_table
+  wheel_table                 = module.dynamo.wheel_table
+  private_subnet          = module.vpc.private_subnet
+  use_endpoint_security_group = module.vpc.use_endpoint_security_group
 }
 
 module "dynamo" {

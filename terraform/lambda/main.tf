@@ -115,8 +115,8 @@ resource "aws_lambda_function" "lambda" {
   timeout     = local.timeout
 
   vpc_config {
-    subnet_ids = var.vpc_subnet_arn
-    security_group_ids = var.allow_vpc_endpoints_security_group
+    subnet_ids         = [var.private_subnet.id]
+    security_group_ids = [var.use_endpoint_security_group.id]
   }
 
   environment {
