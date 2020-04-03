@@ -49,45 +49,54 @@ class App extends Component<AppProps, AppState> {
   }
 
   componentDidMount() {
+    // fix: cognito disabled, stop it from calling config
     this.props.dispatchConfigGet();
   }
 
   componentDidUpdate() {
     if (this.state.cognitoUserPool === undefined && this.props.configFetch.fulfilled) {
-      const cognitoUserPool = new CognitoUserPool({
-        UserPoolId: this.props.configFetch.value.USER_POOL_ID,
-        ClientId: this.props.configFetch.value.APP_CLIENT_ID,
-      })
+      // fix: cognito disabled, stop it from calling config
+      const cognitoUserPool = {}
+
+    //  const cognitoUserPool = new CognitoUserPool({
+    //    UserPoolId: this.props.configFetch.value.USER_POOL_ID,
+    //    ClientId: this.props.configFetch.value.APP_CLIENT_ID,
+      //})
       this.setState({cognitoUserPool}, this.refreshSession);
-    }
+   }
   }
 
   refreshSession = () => {
-    const currentUser = this.state.cognitoUserPool.getCurrentUser()
+    // fix: disable configuration
+    // const currentUser = this.state.cognitoUserPool.getCurrentUser()
+    const currentUser = "user"
     if (currentUser !== null) {
       const app = this;  // Necessary because of 'this' getting overridden in the callback
-      currentUser.getSession(function(err, session) {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        container.registerRequestHeader('Authorization', session.getIdToken().getJwtToken());
-        app.setState({cognitoSession: session});
-      })
+      // fix: disable configuration
+      // currentUser.getSession(function(err, session) {
+      //   if (err) {
+      //     console.error(err);
+      //     return;
+      //   }
+      //   container.registerRequestHeader('Authorization', session.getIdToken().getJwtToken());
+      //   app.setState({cognitoSession: session});
+      // })
     }
   }
 
   userLogout = () => {
-    this.state.cognitoUserPool.getCurrentUser().signOut();
+    // fix: disable config
+    // this.state.cognitoUserPool.getCurrentUser().signOut();
     this.setState({cognitoUserPool: undefined, cognitoSession: undefined});
   }
 
   handleClickCapture = () => {
-    if(this.state.cognitoUserPool!== undefined){
-      this.refreshSession()
-    }else{
-      this.componentDidUpdate()
-    }
+    // fix: disable config
+    // if(this.state.cognitoUserPool!== undefined){
+    //   this.refreshSession()
+    // }else{
+    //   this.componentDidUpdate()
+    // }
   }
 
   render() {
@@ -97,14 +106,17 @@ class App extends Component<AppProps, AppState> {
 
     const childProps = {
       userHasAuthenticated: this.refreshSession,
-      userPool: new CognitoUserPool({
-        UserPoolId: this.props.configFetch.value.USER_POOL_ID,
-        ClientId: this.props.configFetch.value.APP_CLIENT_ID,
-      }),
+      // fix: cognito disabled, stop it from calling config
+      //userPool: new CognitoUserPool({
+      //  UserPoolId: this.props.configFetch.value.USER_POOL_ID,
+      //  ClientId: this.props.configFetch.value.APP_CLIENT_ID,
+      //}),
       userLogout: this.userLogout
     };
 
-    if (this.state.cognitoSession !== undefined && this.state.cognitoSession.isValid()) {
+    // fix - bypass login
+    // if (this.state.cognitoSession !== undefined && this.state.cognitoSession.isValid()) {
+    if (true) {      
       return (
           <BrowserRouter>
             <div id="grandparent" onClickCapture={this.handleClickCapture}>

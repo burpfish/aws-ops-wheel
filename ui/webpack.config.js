@@ -19,7 +19,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ENV = process.env.NODE_ENV || 'development';
 let DEV_SERVER = '';
 try {
-  DEV_SERVER = require('./development_app_location.js');
+  DEV_SERVER = require('./development_app_location.js.js');
 } catch(err) {
   // May not be initialized yet by build script, which is only an issue for running webpack server
 }

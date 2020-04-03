@@ -25,8 +25,11 @@ interface NavigationProps {
 
 class Navigation extends Component<NavigationProps> {
   render() {
-    const username = this.props.userPool.getCurrentUser().getUsername();
+    // fix: hardcode user name
+    const username = "user"
+    // const username = this.props.userPool.getCurrentUser().getUsername();
 
+    // fix: do not show login details
     return(
       <Navbar fluid={true}>
         <Navbar.Header>
@@ -39,14 +42,30 @@ class Navigation extends Component<NavigationProps> {
             <NavItem eventKey={1}>Wheels</NavItem>
           </LinkContainer>
         </Nav>
-        <Nav pullRight>
-            <NavItem eventKey={3} onClick={this.props.userLogout}>Logout</NavItem>
-        </Nav>
-        <Navbar.Text pullRight>
-          Signed in as: <strong>{username}</strong>
-        </Navbar.Text>
       </Navbar>
     )
+
+
+    // return(
+    //   <Navbar fluid={true}>
+    //     <Navbar.Header>
+    //       <Navbar.Brand>
+    //         The Wheel
+    //       </Navbar.Brand>
+    //     </Navbar.Header>
+    //     <Nav>
+    //       <LinkContainer to="/app">
+    //         <NavItem eventKey={1}>Wheels</NavItem>
+    //       </LinkContainer>
+    //     </Nav>
+    //     <Nav pullRight>
+    //         <NavItem eventKey={3} onClick={this.props.userLogout}>Logout</NavItem>
+    //     </Nav>
+    //     <Navbar.Text pullRight>
+    //       Signed in as: <strong>{username}</strong>
+    //     </Navbar.Text>
+    //   </Navbar>
+    // )
   }
 }
 
