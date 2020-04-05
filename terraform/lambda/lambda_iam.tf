@@ -21,11 +21,12 @@ resource "aws_iam_role_policy" "lambda_policy" {
   name = "AWSOpsWheelLambdaPolicy"
   role = aws_iam_role.lambda_role.id
 
-  policy = <<-EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "DynamoTableAccess",
             "Action": [
                 "dynamodb:DeleteItem",
                 "dynamodb:GetItem",
@@ -35,9 +36,19 @@ resource "aws_iam_role_policy" "lambda_policy" {
                 "dynamodb:UpdateItem",
                 "dynamodb:BatchWriteItem"
             ],
-            "Resource": "arn:aws:dynamodb:us-west-2:${data.aws_caller_identity.current.account_id}:table/*",
-            "Effect": "Allow"
-        }
+          "Resource":  [ 
+            "${var.dynamo_config.participant_table.arn}",
+            "${var.dynamo_config.wheel_table.arn}"
+          ],
+          "Effect": "Allow"
+        },
+        {
+          "Sid": "AllowAccessThroughEndpointOnly",
+          "Action": "dynamodb:*",
+          "Effect": "Deny",
+          "Resource": "*",
+          "Condition": { "StringNotEquals" : { "aws:sourceVpce": "${var.vpc_config.dynamo_vpc_endpoint.id}" } }
+        }  
     ]
 }
   EOF

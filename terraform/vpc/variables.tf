@@ -1,2 +1,3 @@
-variable participant_table {}
-variable wheel_table {}
+variable dynamo_config {}
+
+variable s3_config {}

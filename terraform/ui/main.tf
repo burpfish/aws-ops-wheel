@@ -30,7 +30,7 @@ EOT
 resource "aws_s3_bucket_object" "upload_files" {
   for_each = fileset(local.build_dir, "**/*.*")
 
-  bucket       = var.static_bucket_name
+  bucket       = var.s3_config.static_bucket.id
   key          = each.value
   source       = "${local.build_dir}${each.value}"
   etag         = filemd5("${local.build_dir}${each.value}")

@@ -1,2 +1,2 @@
-variable static_bucket_name {
+variable s3_config {
 }

@@ -10,8 +10,8 @@ locals {
     APP_CLIENT_ID = "N/A"
     USER_POOL_ID  = "N/A"
 
-    PARTICIPANT_TABLE = var.participant_table
-    WHEEL_TABLE       = var.wheel_table
+    PARTICIPANT_TABLE = var.dynamo_config.participant_table.id
+    WHEEL_TABLE       = var.dynamo_config.wheel_table.id
   }
 
   lambda_config = [
@@ -115,8 +115,8 @@ resource "aws_lambda_function" "lambda" {
   timeout     = local.timeout
 
   vpc_config {
-    subnet_ids         = [var.private_subnet.id]
-    security_group_ids = [var.use_endpoint_security_group.id]
+    subnet_ids         = [var.vpc_config.private_subnet.id]
+    security_group_ids = [var.vpc_config.use_endpoint_security_group.id]
   }
 
   environment {

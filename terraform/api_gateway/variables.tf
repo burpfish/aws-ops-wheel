@@ -1,3 +1,5 @@
-variable lambda_arns {}
+variable lambda_config {}
 
-variable static_bucket_name {}
+variable s3_config {}
+
+variable vpc_config {}

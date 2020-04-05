@@ -109,7 +109,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "credentials": "arn:aws:iam::098504033684:role/wheel_test_manul_deleteme",
+          "credentials": "${api_gateway_role}",
           "uri": "arn:aws:apigateway:${region}:s3:path/${static_bucket_name}/favicon.ico",
           "responses": {
             "default": {
@@ -172,7 +172,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "credentials": "arn:aws:iam::098504033684:role/wheel_test_manul_deleteme",
+          "credentials": "${api_gateway_role}",
           "uri": "arn:aws:apigateway:${region}:s3:path/${static_bucket_name}/index.production.html",
           "responses": {
             "4\\d{2}": {
@@ -246,7 +246,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "credentials": "arn:aws:iam::098504033684:role/wheel_test_manul_deleteme",
+          "credentials": "${api_gateway_role}",
           "uri": "arn:aws:apigateway:${region}:s3:path/${static_bucket_name}/{item}",
           "responses": {
             "4\\d{2}": {
@@ -547,7 +547,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "credentials": "arn:aws:iam::098504033684:role/wheel_test_manul_deleteme",
+          "credentials": "${api_gateway_role}",
           "uri": "arn:aws:apigateway:${region}:s3:path/${static_bucket_name}/{item}",
           "responses": {
             "4\\d{2}": {

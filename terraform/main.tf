@@ -1,24 +1,23 @@
 module "vpc" {
   source = "./vpc"
 
-  participant_table = module.dynamo.participant_table
-  wheel_table       = module.dynamo.wheel_table
+  dynamo_config     = module.dynamo
+  s3_config = module.S3
 }
 
 module "api_gateway" {
   source = "./api_gateway"
 
-  lambda_arns        = module.lambda.lambda_arns
-  static_bucket_name = module.S3.static_bucket_name
+  lambda_config        = module.lambda
+  vpc_config        = module.vpc
+  s3_config = module.S3
 }
 
 module "lambda" {
   source = "./lambda"
 
-  participant_table           = module.dynamo.participant_table
-  wheel_table                 = module.dynamo.wheel_table
-  private_subnet          = module.vpc.private_subnet
-  use_endpoint_security_group = module.vpc.use_endpoint_security_group
+  dynamo_config     = module.dynamo
+  vpc_config        = module.vpc
 }
 
 module "dynamo" {
@@ -32,5 +31,5 @@ module "S3" {
 module "ui" {
   source = "./ui"
 
-  static_bucket_name = module.S3.static_bucket_name
+  s3_config = module.S3
 }
