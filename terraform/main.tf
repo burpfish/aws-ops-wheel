@@ -1,23 +1,28 @@
+locals {
+  api_name = "AWSOpsWheel"
+}
+
 module "vpc" {
   source = "./vpc"
 
-  dynamo_config     = module.dynamo
-  s3_config = module.S3
+  dynamo_config = module.dynamo
+  s3_config     = module.S3
 }
 
 module "api_gateway" {
   source = "./api_gateway"
 
-  lambda_config        = module.lambda
-  vpc_config        = module.vpc
-  s3_config = module.S3
+  api_name      = local.api_name
+  lambda_config = module.lambda
+  vpc_config    = module.vpc
+  s3_config     = module.S3
 }
 
 module "lambda" {
   source = "./lambda"
 
-  dynamo_config     = module.dynamo
-  vpc_config        = module.vpc
+  dynamo_config = module.dynamo
+  vpc_config    = module.vpc
 }
 
 module "dynamo" {
@@ -32,4 +37,10 @@ module "ui" {
   source = "./ui"
 
   s3_config = module.S3
+}
+
+module "ec2_test" {
+  source = "./ec2_test"
+
+  vpc_config = module.vpc
 }

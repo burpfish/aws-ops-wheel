@@ -1,3 +1,7 @@
+output vpc {
+  value = aws_vpc.vpc
+}
+
 output private_subnet {
   value = aws_subnet.private_subnet
 }
@@ -12,4 +16,8 @@ output dynamo_vpc_endpoint {
 
 output s3_vpc_endpoint {
   value = aws_vpc_endpoint.s3
+}
+
+output api_gateway_vpc_endpoint {
+  value = aws_vpc_endpoint.execute_api
 }

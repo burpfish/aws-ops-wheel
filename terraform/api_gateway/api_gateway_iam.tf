@@ -31,14 +31,7 @@ resource "aws_iam_role_policy" "api_gateway_policy" {
                 "s3:GetObject"
             ],
             "Resource": "${var.s3_config.static_bucket.arn}/*"
-        },
-        {
-          "Sid": "AllowAccessThroughEndpointOnly",
-          "Action": "s3:*",
-          "Effect": "Deny",
-          "Resource": "*",
-          "Condition": { "StringNotEquals" : { "aws:sourceVpce": "${var.vpc_config.s3_vpc_endpoint.id}" } }
-        }  
+        }
     ]
 }
   EOF

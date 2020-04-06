@@ -30,12 +30,12 @@ resource "aws_security_group" "use_endpoint_security_group" {
 
 resource "aws_security_group_rule" "egress_dynamo" {
   security_group_id = aws_security_group.use_endpoint_security_group.id
-  description = "DynamoDB service"
+  description       = "DynamoDB service"
   type              = "egress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks      = data.aws_prefix_list.dynamo.cidr_blocks
+  cidr_blocks       = data.aws_prefix_list.dynamo.cidr_blocks
 }
 
 resource "aws_security_group_rule" "egress_https" {
@@ -62,7 +62,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   route_table_ids = [aws_route_table.private_route_table.id]
 
   // note that for gateway endpoints (such as dynamo db, we cannot lock down the principle; see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-access.html#vpc-endpoint-policies)
-  policy          = <<POLICY
+  policy = <<POLICY
   {
     "Version": "2012-10-17",
     "Statement": [
@@ -94,7 +94,7 @@ resource "aws_vpc_endpoint" "s3" {
   route_table_ids = [aws_route_table.private_route_table.id]
 
   // note that for gateway endpoints (such as dynamo db, we cannot lock down the principle; see https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-access.html#vpc-endpoint-policies)
-  policy          = <<POLICY
+  policy = <<POLICY
   {
     "Version": "2012-10-17",
     "Statement": [
@@ -112,13 +112,31 @@ POLICY
 }
 
 resource "aws_vpc_endpoint" "execute_api" {
-  vpc_id          = aws_vpc.vpc.id
-  service_name    = "com.amazonaws.${data.aws_region.current.name}.execute-api"
+  vpc_id            = aws_vpc.vpc.id
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.execute-api"
   vpc_endpoint_type = "Interface"
+  subnet_ids        = [aws_subnet.private_subnet.id]
+
+  #   policy = <<POLICY
+  # {
+  #     "Statement": [
+  #         {
+  #             "Principal": "*",
+  #             "Action": [
+  #                 "execute-api:Invoke"
+  #             ],
+  #             "Effect": "Allow",
+  #             "Resource": [
+  #                 "${API_ARN}/*"
+  #             ]
+  #         }
+  #     ]
+  # }
+  # POLICY
 
   security_group_ids = [
     aws_security_group.endpoint_security_group.id
   ]
 
-  private_dns_enabled = true  
+  private_dns_enabled = true
 }
